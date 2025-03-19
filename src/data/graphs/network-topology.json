@@ -1,0 +1,91 @@
+{
+  "displayName": "Network Topology",
+  "nodes": [
+    {
+      "id": "0",
+      "name": "Server A",
+      "symbolSize": 20,
+      "category": 0,
+      "value": 28,
+      "authors": ["John Smith", "Jane Doe"],
+      "institutions": ["Cloud Services Inc."]
+    },
+    {
+      "id": "1",
+      "name": "Server B",
+      "symbolSize": 16,
+      "category": 0,
+      "value": 22,
+      "authors": ["Robert Johnson"],
+      "institutions": ["Network Solutions"]
+    },
+    {
+      "id": "2",
+      "name": "Router 1",
+      "symbolSize": 18,
+      "category": 1,
+      "value": 16,
+      "authors": ["Maria Garcia"],
+      "institutions": ["Cisco Systems"]
+    },
+    {
+      "id": "3",
+      "name": "Router 2",
+      "symbolSize": 18,
+      "category": 1,
+      "value": 16,
+      "authors": ["David Chen"],
+      "institutions": ["Networking Corp"]
+    },
+    {
+      "id": "4",
+      "name": "Client 1",
+      "symbolSize": 12,
+      "category": 2,
+      "value": 10,
+      "authors": ["Sarah Wilson"],
+      "institutions": ["End User Group"]
+    },
+    {
+      "id": "5",
+      "name": "Client 2",
+      "symbolSize": 12,
+      "category": 2,
+      "value": 10,
+      "authors": ["Michael Brown"],
+      "institutions": ["User Department"]
+    },
+    {
+      "id": "6",
+      "name": "Client 3",
+      "symbolSize": 12,
+      "category": 2,
+      "value": 10,
+      "authors": ["Lisa Wang"],
+      "institutions": ["Client Division"]
+    },
+    {
+      "id": "7",
+      "name": "Client 4",
+      "symbolSize": 12,
+      "category": 2,
+      "value": 10,
+      "authors": ["James Lee"],
+      "institutions": ["End User Department"]
+    }
+  ],
+  "links": [
+    { "source": "0", "target": "2", "value": 1 },
+    { "source": "1", "target": "3", "value": 1 },
+    { "source": "2", "target": "3", "value": 2 },
+    { "source": "2", "target": "4", "value": 1 },
+    { "source": "2", "target": "5", "value": 1 },
+    { "source": "3", "target": "6", "value": 1 },
+    { "source": "3", "target": "7", "value": 1 }
+  ],
+  "categories": [
+    { "name": "Servers" },
+    { "name": "Routers" },
+    { "name": "Clients" }
+  ]
+} 

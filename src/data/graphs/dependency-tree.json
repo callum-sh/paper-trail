@@ -1,0 +1,27 @@
+{
+  "displayName": "Dependency Tree",
+  "nodes": [
+    { "id": "0", "name": "Main App", "symbolSize": 24, "category": 0, "value": 30 },
+    { "id": "1", "name": "UI Module", "symbolSize": 18, "category": 1, "value": 25 },
+    { "id": "2", "name": "API Client", "symbolSize": 18, "category": 1, "value": 25 },
+    { "id": "3", "name": "Auth Service", "symbolSize": 16, "category": 1, "value": 20 },
+    { "id": "4", "name": "Button Comp", "symbolSize": 12, "category": 2, "value": 15 },
+    { "id": "5", "name": "Form Comp", "symbolSize": 12, "category": 2, "value": 15 },
+    { "id": "6", "name": "REST Client", "symbolSize": 12, "category": 2, "value": 15 },
+    { "id": "7", "name": "JWT Helper", "symbolSize": 12, "category": 2, "value": 15 }
+  ],
+  "links": [
+    { "source": "0", "target": "1", "value": 2 },
+    { "source": "0", "target": "2", "value": 2 },
+    { "source": "0", "target": "3", "value": 2 },
+    { "source": "1", "target": "4", "value": 1 },
+    { "source": "1", "target": "5", "value": 1 },
+    { "source": "2", "target": "6", "value": 1 },
+    { "source": "3", "target": "7", "value": 1 }
+  ],
+  "categories": [
+    { "name": "Core" },
+    { "name": "Modules" },
+    { "name": "Components" }
+  ]
+} 
