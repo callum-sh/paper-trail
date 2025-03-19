@@ -4,6 +4,8 @@ import ReactECharts from "echarts-for-react";
 import type { EChartsOption } from "echarts";
 import "echarts/extension/bmap/bmap";
 import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { X } from "lucide-react";
 
 // Sample data structure
 interface Node {
@@ -15,6 +17,8 @@ interface Node {
   x?: number;
   y?: number;
   z?: number;
+  authors?: string[];
+  institutions?: string[];
 }
 
 interface Link {
@@ -34,18 +38,139 @@ interface Graph3DProps {
   type: string;
 }
 
+interface NodeInfoProps {
+  node: Node | null;
+  onClose: () => void;
+}
+
+// Node information card component
+const NodeInfoCard: React.FC<NodeInfoProps> = ({ node, onClose }) => {
+  if (!node) return null;
+
+  return (
+    <div className="absolute right-4 top-4 z-20 w-64 sm:w-80 transition-all duration-300 animate-fade-in">
+      <Card className="bg-background/90 backdrop-blur-sm border-primary/20 shadow-lg">
+        <CardHeader className="pb-2 relative">
+          <button 
+            onClick={onClose} 
+            className="absolute right-2 top-2 p-1 rounded-full hover:bg-muted transition-colors"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </button>
+          <CardTitle className="text-base text-primary">{node.name}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 pt-0">
+          {node.authors && node.authors.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-muted-foreground mb-1">Authors</h4>
+              <div className="text-sm space-y-1">
+                {node.authors.map((author, index) => (
+                  <div key={index} className="text-foreground">{author}</div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {node.institutions && node.institutions.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium text-muted-foreground mb-1">Institutions</h4>
+              <div className="text-sm space-y-1">
+                {node.institutions.map((institution, index) => (
+                  <div key={index} className="text-foreground">{institution}</div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {(!node.authors || node.authors.length === 0) && 
+           (!node.institutions || node.institutions.length === 0) && (
+            <div className="text-sm text-muted-foreground">
+              No additional information available for this node.
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 // Default datasets for different graph types
 const DEFAULT_DATA: Record<string, GraphData> = {
   "network-topology": {
     nodes: [
-      { id: "0", name: "Server A", symbolSize: 20, category: 0, value: 28 },
-      { id: "1", name: "Server B", symbolSize: 16, category: 0, value: 22 },
-      { id: "2", name: "Router 1", symbolSize: 18, category: 1, value: 16 },
-      { id: "3", name: "Router 2", symbolSize: 18, category: 1, value: 16 },
-      { id: "4", name: "Client 1", symbolSize: 12, category: 2, value: 10 },
-      { id: "5", name: "Client 2", symbolSize: 12, category: 2, value: 10 },
-      { id: "6", name: "Client 3", symbolSize: 12, category: 2, value: 10 },
-      { id: "7", name: "Client 4", symbolSize: 12, category: 2, value: 10 }
+      { 
+        id: "0", 
+        name: "Server A", 
+        symbolSize: 20, 
+        category: 0, 
+        value: 28,
+        authors: ["John Smith", "Jane Doe"],
+        institutions: ["Cloud Services Inc."]
+      },
+      { 
+        id: "1", 
+        name: "Server B", 
+        symbolSize: 16, 
+        category: 0, 
+        value: 22,
+        authors: ["Robert Johnson"],
+        institutions: ["Network Solutions"]
+      },
+      { 
+        id: "2", 
+        name: "Router 1", 
+        symbolSize: 18, 
+        category: 1, 
+        value: 16,
+        authors: ["Maria Garcia"],
+        institutions: ["Cisco Systems"]
+      },
+      { 
+        id: "3", 
+        name: "Router 2", 
+        symbolSize: 18, 
+        category: 1, 
+        value: 16,
+        authors: ["David Chen"],
+        institutions: ["Networking Corp"]
+      },
+      { 
+        id: "4", 
+        name: "Client 1", 
+        symbolSize: 12, 
+        category: 2, 
+        value: 10,
+        authors: ["Sarah Wilson"],
+        institutions: ["End User Group"]
+      },
+      { 
+        id: "5", 
+        name: "Client 2", 
+        symbolSize: 12, 
+        category: 2, 
+        value: 10,
+        authors: ["Michael Brown"],
+        institutions: ["User Department"]
+      },
+      { 
+        id: "6", 
+        name: "Client 3", 
+        symbolSize: 12, 
+        category: 2, 
+        value: 10,
+        authors: ["Lisa Wang"],
+        institutions: ["Client Division"]
+      },
+      { 
+        id: "7", 
+        name: "Client 4", 
+        symbolSize: 12, 
+        category: 2, 
+        value: 10,
+        authors: ["James Lee"],
+        institutions: ["End User Department"]
+      }
     ],
     links: [
       { source: "0", target: "2", value: 1 },
@@ -152,6 +277,8 @@ const DEFAULT_DATA: Record<string, GraphData> = {
 
 const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
   const [graphData, setGraphData] = useState<GraphData | undefined>(undefined);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const chartRef = React.useRef<ReactECharts>(null);
 
   useEffect(() => {
     // If external data is provided, use it, otherwise use default
@@ -173,7 +300,23 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
         duration: 3000,
       });
     }
+    
+    // Reset selected node when graph type changes
+    setSelectedNode(null);
   }, [data, type]);
+
+  const handleChartEvents = {
+    'click': (params: any) => {
+      if (params.dataType === 'node') {
+        const nodeData = graphData?.nodes.find(node => node.id === params.data.id) || null;
+        setSelectedNode(nodeData);
+      }
+    }
+  };
+
+  const handleCloseNodeInfo = () => {
+    setSelectedNode(null);
+  };
 
   const getOption = (): EChartsOption => {
     if (!graphData) return {};
@@ -210,7 +353,9 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
           layout: 'force',
           force: {
             repulsion: 300,
-            edgeLength: 120
+            edgeLength: 120,
+            gravity: 0.1,
+            friction: 0.6
           },
           roam: true,
           draggable: true,
@@ -258,9 +403,7 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
             itemStyle: {
               borderWidth: 2
             }
-          },
-          // Enable 3D
-          force3D: true
+          }
         }
       ],
       backgroundColor: 'rgba(0, 0, 0, 0)'
@@ -268,14 +411,19 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center relative">
       {graphData ? (
-        <ReactECharts 
-          option={getOption()} 
-          style={{ height: '100%', width: '100%' }}
-          opts={{ renderer: 'canvas' }}
-          className="echarts-for-react"
-        />
+        <>
+          <ReactECharts 
+            ref={chartRef}
+            option={getOption()} 
+            style={{ height: '100%', width: '100%' }}
+            opts={{ renderer: 'canvas' }}
+            className="echarts-for-react"
+            onEvents={handleChartEvents}
+          />
+          <NodeInfoCard node={selectedNode} onClose={handleCloseNodeInfo} />
+        </>
       ) : (
         <div className="text-center">
           <p className="text-muted-foreground">Loading graph...</p>
