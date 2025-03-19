@@ -1,0 +1,10 @@
+{
+  "id": "transformer",
+  "name": "Transformer: A Novel Neural Network Architecture",
+  "authors": ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar", "Jakob Uszkoreit", "Llion Jones", "Aidan N. Gomez", "Łukasz Kaiser", "Illia Polosukhin"],
+  "year": 2017,
+  "citations": 35000,
+  "institutions": ["Google Research"],
+  "categories": ["Transformers", "NLP"],
+  "url": "https://arxiv.org/abs/1706.03762"
+} 

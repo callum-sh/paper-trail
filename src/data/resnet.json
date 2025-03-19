@@ -1,0 +1,10 @@
+{
+  "id": "resnet",
+  "name": "Deep Residual Learning for Image Recognition",
+  "authors": ["Kaiming He", "Xiangyu Zhang", "Shaoqing Ren", "Jian Sun"],
+  "year": 2015,
+  "citations": 40000,
+  "institutions": ["Microsoft Research"],
+  "categories": ["Computer Vision", "Deep Learning"],
+  "url": "https://arxiv.org/abs/1512.03385"
+} 

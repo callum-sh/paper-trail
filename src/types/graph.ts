@@ -1,29 +1,33 @@
-export interface Node {
+export interface Paper {
   id: string;
   name: string;
-  symbolSize?: number;
-  category?: number;
-  value?: number;
+  authors: string[];
+  year: number;
+  citations: number;
+  institutions: string[];
+  categories: string[];
+  abstract?: string;
+  url?: string;
   x?: number;
   y?: number;
   z?: number;
-  authors?: string[];
-  institutions?: string[];
 }
 
-export interface Link {
-  source: string;
-  target: string;
-  value?: number;
+export interface Citation {
+  source: string;  // citing paper
+  target: string;  // cited paper
+  year: number;
 }
 
 export interface GraphData {
-  nodes: Node[];
-  links: Link[];
-  categories?: { name: string }[];
-  displayName: string;  // Added for human-readable graph names
-}
-
-export interface GraphCollection {
-  [key: string]: GraphData;
+  displayName: string;
+  description: string;
+  nodes: Paper[];
+  links: Citation[];
+  categories: {
+    name: string;
+    itemStyle?: {
+      color?: string;
+    };
+  }[];
 } 

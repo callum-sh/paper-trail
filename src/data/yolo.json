@@ -1,0 +1,10 @@
+{
+  "id": "yolo",
+  "name": "YOLOv3: An Incremental Improvement",
+  "authors": ["Joseph Redmon", "Ali Farhadi"],
+  "year": 2018,
+  "citations": 30000,
+  "institutions": ["University of Washington"],
+  "categories": ["Computer Vision", "Object Detection"],
+  "url": "https://arxiv.org/abs/1804.02767"
+} 

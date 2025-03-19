@@ -1,13 +1,19 @@
-import networkTopology from './network-topology.json';
-import dependencyTree from './dependency-tree.json';
-import processFlow from './process-flow.json';
-import organizationChart from './organization-chart.json';
+import type { GraphData } from '@/types/graph';
+import attention from '../../data/attention.json';
+import bert from '../../data/bert.json';
+import resnet from '../../data/resnet.json';
+import transformer from '../../data/transformer.json';
+import yolo from '../../data/yolo.json';
+import citations from '../../data/citations.json';
 
-export const graphs = {
-  'network-topology': networkTopology,
-  'dependency-tree': dependencyTree,
-  'process-flow': processFlow,
-  'organization-chart': organizationChart
-} as const;
+export type GraphType = 'citation-network';
 
-export type GraphType = keyof typeof graphs; 
+export const graphs: Record<GraphType, GraphData> = {
+  'citation-network': {
+    displayName: 'Citation Network',
+    description: 'A network of academic papers and their citations',
+    nodes: [attention, bert, resnet, transformer, yolo],
+    links: citations.links,
+    categories: citations.categories
+  }
+}; 

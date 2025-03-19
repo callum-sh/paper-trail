@@ -1,0 +1,14 @@
+{
+  "links": [
+    { "source": "bert", "target": "attention", "year": 2018 },
+    { "source": "transformer", "target": "attention", "year": 2017 },
+    { "source": "yolo", "target": "resnet", "year": 2018 }
+  ],
+  "categories": [
+    { "name": "Transformers", "itemStyle": { "color": "#9b87f5" } },
+    { "name": "NLP", "itemStyle": { "color": "#7E69AB" } },
+    { "name": "Computer Vision", "itemStyle": { "color": "#6E59A5" } },
+    { "name": "Deep Learning", "itemStyle": { "color": "#D6BCFA" } },
+    { "name": "Object Detection", "itemStyle": { "color": "#33C3F0" } }
+  ]
+} 

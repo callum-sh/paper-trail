@@ -7,22 +7,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GraphUploader } from "@/components/graphs/GraphUploader";
 import { type GraphType } from "@/data/graphs";
-import type { GraphData } from "@/types/graph";
+import type { GraphData, Paper } from "@/types/graph";
 
 const Graph = () => {
-  const [selectedGraph, setSelectedGraph] = useState<GraphType>("network-topology");
+  const [selectedGraph, setSelectedGraph] = useState<GraphType>("citation-network");
+  const [selectedPaper, setSelectedPaper] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [customGraph, setCustomGraph] = useState<GraphData | null>(null);
 
-  const handleSelectGraph = (graphType: GraphType) => {
-    setSelectedGraph(graphType);
-    setCustomGraph(null);
+  const handleSelectGraph = (paperId: string) => {
+    setSelectedPaper(paperId);
     setIsDialogOpen(false);
   };
 
   const handleGraphUpload = (data: GraphData) => {
     setCustomGraph(data);
-    setSelectedGraph("network-topology"); // Reset to default graph type
+    setSelectedGraph("citation-network");
+    setSelectedPaper(null);
   };
 
   return (
@@ -32,6 +33,7 @@ const Graph = () => {
         <Graph3D 
           type={selectedGraph} 
           data={customGraph || undefined}
+          selectedPaperId={selectedPaper}
         />
       </div>
       
@@ -46,18 +48,23 @@ const Graph = () => {
           className="rounded-full bg-background/80 backdrop-blur-sm shadow-md hover:bg-background"
         >
           <Search className="h-4 w-4" />
-          <span className="sr-only">Select Graph</span>
+          <span className="sr-only">Select Paper</span>
         </Button>
       </div>
 
-      {/* Graph Selection Dialog */}
+      {/* Paper Selection Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Select Graph Type</DialogTitle>
+            <DialogTitle>Select Paper</DialogTitle>
           </DialogHeader>
+          <div className="py-4">
+            <p className="text-sm text-muted-foreground">
+              Select a paper to view its citation network. The network will show papers that cite or are cited by the selected paper.
+            </p>
+          </div>
           <GraphSelector 
-            selectedGraph={selectedGraph} 
+            selectedGraph={selectedPaper || ""} 
             onSelectGraph={handleSelectGraph} 
           />
         </DialogContent>
