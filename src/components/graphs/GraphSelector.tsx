@@ -16,22 +16,24 @@ const graphs = [
 
 const GraphSelector: React.FC<GraphSelectorProps> = ({ selectedGraph, onSelectGraph }) => {
   return (
-    <ul className="space-y-2">
-      {graphs.map((graph) => (
-        <li
-          key={graph.id}
-          className={cn(
-            "p-2 rounded cursor-pointer transition-colors",
-            selectedGraph === graph.id
-              ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-              : "hover:bg-sidebar-accent/50 text-sidebar-foreground"
-          )}
-          onClick={() => onSelectGraph(graph.id)}
-        >
-          {graph.name}
-        </li>
-      ))}
-    </ul>
+    <div className="py-2">
+      <ul className="space-y-2">
+        {graphs.map((graph) => (
+          <li
+            key={graph.id}
+            className={cn(
+              "p-3 rounded cursor-pointer transition-colors flex items-center",
+              selectedGraph === graph.id
+                ? "bg-primary/10 text-primary font-medium"
+                : "hover:bg-muted"
+            )}
+            onClick={() => onSelectGraph(graph.id)}
+          >
+            {graph.name}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
