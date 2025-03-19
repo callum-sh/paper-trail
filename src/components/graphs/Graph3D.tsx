@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
+import type { EChartsOption } from "echarts";
 import "echarts/extension/bmap/bmap";
 import { toast } from "@/components/ui/use-toast";
 
@@ -174,7 +175,7 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
     }
   }, [data, type]);
 
-  const getOption = () => {
+  const getOption = (): EChartsOption => {
     if (!graphData) return {};
 
     const categoryColors = [

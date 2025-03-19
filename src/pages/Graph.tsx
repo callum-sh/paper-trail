@@ -16,42 +16,37 @@ const Graph = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <main className="flex-1 flex flex-col">
-        {/* Header with search button */}
-        <div className="w-full border-b border-border bg-sidebar-background p-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Node Graphs</h2>
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={() => setIsDialogOpen(true)}
-            className="rounded-full"
-          >
-            <Search className="h-4 w-4" />
-            <span className="sr-only">Select Graph</span>
-          </Button>
-        </div>
-        
-        {/* Main content */}
-        <div className="flex-1 p-6">
-          <div className="bg-card/50 backdrop-blur-sm border border-border rounded-lg h-full shadow-sm">
-            <Graph3D type={selectedGraph} />
-          </div>
-        </div>
+    <div className="min-h-screen bg-background flex flex-col relative">
+      {/* Full page graph content */}
+      <div className="absolute inset-0">
+        <Graph3D type={selectedGraph} />
+      </div>
+      
+      {/* Floating search button */}
+      <div className="absolute top-4 right-4 z-10">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={() => setIsDialogOpen(true)}
+          className="rounded-full bg-background/80 backdrop-blur-sm shadow-md hover:bg-background"
+        >
+          <Search className="h-4 w-4" />
+          <span className="sr-only">Select Graph</span>
+        </Button>
+      </div>
 
-        {/* Graph Selection Dialog */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Select Graph Type</DialogTitle>
-            </DialogHeader>
-            <GraphSelector 
-              selectedGraph={selectedGraph} 
-              onSelectGraph={handleSelectGraph} 
-            />
-          </DialogContent>
-        </Dialog>
-      </main>
+      {/* Graph Selection Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Select Graph Type</DialogTitle>
+          </DialogHeader>
+          <GraphSelector 
+            selectedGraph={selectedGraph} 
+            onSelectGraph={handleSelectGraph} 
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
