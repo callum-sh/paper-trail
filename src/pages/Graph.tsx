@@ -1,29 +1,44 @@
-
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 import Graph3D from "@/components/graphs/Graph3D";
 import GraphSelector from "@/components/graphs/GraphSelector";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { GraphUploader } from "@/components/graphs/GraphUploader";
+import { type GraphType } from "@/data/graphs";
+import type { GraphData } from "@/types/graph";
 
 const Graph = () => {
-  const [selectedGraph, setSelectedGraph] = useState<string>("network-topology");
+  const [selectedGraph, setSelectedGraph] = useState<GraphType>("network-topology");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [customGraph, setCustomGraph] = useState<GraphData | null>(null);
 
-  const handleSelectGraph = (graphType: string) => {
+  const handleSelectGraph = (graphType: GraphType) => {
     setSelectedGraph(graphType);
+    setCustomGraph(null);
     setIsDialogOpen(false);
+  };
+
+  const handleGraphUpload = (data: GraphData) => {
+    setCustomGraph(data);
+    setSelectedGraph("network-topology"); // Reset to default graph type
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative">
       {/* Full page graph content */}
-      <div className="absolute inset-0">
-        <Graph3D type={selectedGraph} />
+      <div className="absolute inset-0 h-screen w-full">
+        <Graph3D 
+          type={selectedGraph} 
+          data={customGraph || undefined}
+        />
       </div>
       
-      {/* Floating search button */}
-      <div className="absolute top-4 right-4 z-10">
+      {/* Floating buttons */}
+      <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <GraphUploader onUpload={handleGraphUpload} />
+        <ThemeToggle />
         <Button 
           variant="outline" 
           size="icon" 

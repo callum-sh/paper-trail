@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { graphs, type GraphType } from '@/data/graphs';
-import type { GraphData, GraphCollection } from '@/types/graph';
+import type { GraphData } from '@/types/graph';
 
 // Sample data structure
 interface Node {
@@ -26,12 +26,6 @@ interface Link {
   source: string;
   target: string;
   value?: number;
-}
-
-interface GraphData {
-  nodes: Node[];
-  links: Link[];
-  categories?: { name: string }[];
 }
 
 interface Graph3DProps {
@@ -164,7 +158,15 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
           color: '#aaa'
         }
       },
-      tooltip: {},
+      tooltip: {
+        trigger: 'item',
+        formatter: (params: any) => {
+          if (params.dataType === 'node') {
+            return params.data.name;
+          }
+          return '';
+        }
+      },
       animationDuration: 1500,
       animationEasingUpdate: 'quinticInOut',
       series: [
@@ -183,7 +185,8 @@ const Graph3D: React.FC<Graph3DProps> = ({ data, type }) => {
           label: {
             show: true,
             position: 'right',
-            formatter: '{b}'
+            formatter: '{b}',
+            color: '#fff'
           },
           data: graphData.nodes.map(node => ({
             id: node.id,
